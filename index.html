@@ -651,22 +651,28 @@ document.getElementById('token-input').addEventListener('keydown', e => {
 // API CALLS
 // ══════════════════════════════════════════════
 async function apiGet(url) {
-  const res = await fetch(url, { credentials: 'include' });
+  const sep = url.includes('?') ? '&' : '?';
+  const res = await fetch(`${url}${sep}token=${token}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
 
 async function getSites() {
-  return apiGet(`${API}/data/sites`);
+  const r = await apiGet(`${API}/data/sites`);
+  // retourne {code, data: [...alias]}
+  return (r.data || []).map(alias => ({ alias, name: alias }));
 }
 
 async function getSensors(site, types) {
-  const t = types.map(x => `sensor_types[]=${x}`).join('&');
-  return apiGet(`${API}/data/sensors?sites[]=${site}&${t}`);
+  const t = types.join(',');
+  const r = await apiGet(`${API}/data/sensors?site=${site}&type=${t}`);
+  return { sensors: r.data || [] };
 }
 
 async function getData(site, sensors, start = '-3d') {
-  const s = sensors.map(x => `sensors[]=${x}`).join('&');
-  return apiGet(`${API}/data/json?sites[]=${site}&${s}&start=${start}&aggr_fn=mean&aggr_every=1h`);
+  const s = sensors.join(',');
+  const r = await apiGet(`${API}/data/json?site=${site}&sensorid=${s}&start=${start}&aggrFn=mean&aggrEvery=1h`);
+  return r.data || {};
 }
 
 // ══════════════════════════════════════════════
@@ -674,10 +680,9 @@ async function getData(site, sensors, start = '-3d') {
 // ══════════════════════════════════════════════
 async function initApp() {
   try {
-    const data = await getSites();
-    sitesData = data.sites || [];
+    const sites = await getSites();
     const sel = document.getElementById('site-select');
-    sel.innerHTML = sitesData.map(s => `<option value="${s.alias}" ${s.alias === currentSite ? 'selected' : ''}>${s.name}</option>`).join('');
+    sel.innerHTML = sites.map(s => `<option value="${s.alias}" ${s.alias === currentSite ? 'selected' : ''}>${s.name}</option>`).join('');
   } catch {
     // fallback sites connus
     const fallback = [
