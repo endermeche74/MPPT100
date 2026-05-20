@@ -650,26 +650,23 @@ document.getElementById('token-input').addEventListener('keydown', e => {
 // ══════════════════════════════════════════════
 // API CALLS
 // ══════════════════════════════════════════════
-async function apiGet(endpoint) {
-  const res = await fetch(`${API}/${endpoint}&token=${token}`);
+async function apiGet(url) {
+  const res = await fetch(url, { credentials: 'include' });
   return res.json();
 }
 
 async function getSites() {
-  const res = await fetch(`${API}/site/all?token=${token}`);
-  return res.json();
+  return apiGet(`${API}/data/sites`);
 }
 
 async function getSensors(site, types) {
   const t = types.map(x => `sensor_types[]=${x}`).join('&');
-  const res = await fetch(`${API}/sensor/all?sites[]=${site}&${t}&token=${token}`);
-  return res.json();
+  return apiGet(`${API}/data/sensors?sites[]=${site}&${t}`);
 }
 
 async function getData(site, sensors, start = '-3d') {
   const s = sensors.map(x => `sensors[]=${x}`).join('&');
-  const res = await fetch(`${API}/data?sites[]=${site}&${s}&start=${start}&aggr_fn=mean&aggr_every=1h&token=${token}`);
-  return res.json();
+  return apiGet(`${API}/data/json?sites[]=${site}&${s}&start=${start}&aggr_fn=mean&aggr_every=1h`);
 }
 
 // ══════════════════════════════════════════════
