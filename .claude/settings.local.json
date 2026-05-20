@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install *)",
+      "PowerShell(pip install *)",
+      "PowerShell(python --version; python -m pip install flask flask-cors requests 2>&1 | Select-Object -Last 5)",
+      "PowerShell(py *)",
+      "PowerShell(Get-Command *)",
+      "PowerShell(& \"C:\\\\Users\\\\soren\\\\anaconda3\\\\python.exe\" --version; & \"C:\\\\Users\\\\soren\\\\anaconda3\\\\python.exe\" -m pip install flask flask-cors requests 2>&1 | Select-Object -Last 5)",
+      "PowerShell(Start-Process -FilePath \"C:\\\\Users\\\\soren\\\\anaconda3\\\\python.exe\" -ArgumentList \"C:\\\\Users\\\\soren\\\\OneDrive\\\\Desktop\\\\MPPT100\\\\server.py\" -WindowStyle Hidden -PassThru | Select-Object -ExpandProperty Id)",
+      "PowerShell(Start-Sleep -Seconds 3; try { $r = Invoke-WebRequest -Uri \"http://localhost:5000\" -UseBasicParsing -TimeoutSec 5; \"Status: $\\($r.StatusCode\\)\" } catch { \"Erreur: $_\" })",
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5000/solardb/data/sites\" -UseBasicParsing -TimeoutSec 10; \"Status: $\\($r.StatusCode\\)\"; $r.Content.Substring\\(0, [Math]::Min\\(300, $r.Content.Length\\)\\) } catch { \"Erreur: $_\" })"
+    ]
+  }
+}
