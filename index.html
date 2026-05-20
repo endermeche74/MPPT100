@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SolarWatch — Réunion</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1525;
+    --bg3: #161d30;
+    --card: #1a2238;
+    --card2: #1f2a42;
+    --border: #2a3a5c;
+    --accent: #f5a623;
+    --accent2: #ff6b35;
+    --blue: #4db8ff;
+    --green: #4dffb8;
+    --purple: #b06dff;
+    --text: #e8f0ff;
+    --text2: #8a9bc0;
+    --text3: #4a5a80;
+    --glow: rgba(245,166,35,0.15);
+    --glow2: rgba(77,184,255,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Syne', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Fond animé ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%, rgba(245,166,35,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(77,184,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Écran de connexion ── */
+  #login-screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background: var(--bg);
+  }
+
+  .login-box {
+    text-align: center;
+    max-width: 420px;
+    padding: 3rem 2.5rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 0 60px rgba(245,166,35,0.1);
+    animation: fadeIn 0.6s ease;
+  }
+
+  .login-logo {
+    font-size: 3.5rem;
+    margin-bottom: 0.5rem;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  .login-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.3rem;
+  }
+
+  .login-sub {
+    color: var(--text2);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .login-input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+
+  .login-input:focus { border-color: var(--accent); }
+
+  .login-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    color: #0a0e1a;
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .login-btn:hover { background: #ffc04d; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(245,166,35,0.3); }
+  .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .login-error {
+    margin-top: 0.8rem;
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    display: none;
+  }
+
+  /* ── App principale ── */
+  #app { display: none; position: relative; z-index: 1; }
+
+  /* ── Header ── */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 2rem;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,14,26,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+
+  .header-logo span { font-size: 1.5rem; }
+
+  .header-site {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .site-select {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .refresh-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s;
+  }
+
+  .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── Navigation ── */
+  nav {
+    display: flex;
+    gap: 0.3rem;
+    padding: 1rem 2rem 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .nav-btn {
+    padding: 0.7rem 1.3rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text2);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: -1px;
+  }
+
+  .nav-btn:hover { color: var(--text); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* ── Contenu ── */
+  .page { display: none; padding: 2rem; animation: fadeIn 0.4s ease; }
+  .page.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Accueil ── */
+  .welcome-hero {
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+  }
+
+  .welcome-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+
+  .welcome-hero p {
+    color: var(--text2);
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+  }
+
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: var(--glow);
+  }
+
+  .stat-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(245,166,35,0.12); }
+  .stat-card:hover::before { opacity: 1; }
+
+  .stat-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+  .stat-label { font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+  .stat-value { font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+  .stat-unit { font-size: 0.85rem; color: var(--text2); margin-left: 0.2rem; }
+  .stat-trend { font-size: 0.75rem; margin-top: 0.3rem; color: var(--text3); }
+
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+
+  .menu-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+  }
+
+  .menu-card:hover { transform: translateY(-4px); }
+  .menu-card.solar:hover { border-color: var(--accent); box-shadow: 0 12px 40px rgba(245,166,35,0.15); }
+  .menu-card.meteo:hover { border-color: var(--blue); box-shadow: 0 12px 40px rgba(77,184,255,0.15); }
+  .menu-card.vent:hover { border-color: var(--green); box-shadow: 0 12px 40px rgba(77,255,184,0.15); }
+  .menu-card.uv:hover { border-color: var(--purple); box-shadow: 0 12px 40px rgba(176,109,255,0.15); }
+  .menu-card.jumeau:hover { border-color: var(--accent2); box-shadow: 0 12px 40px rgba(255,107,53,0.15); }
+
+  .menu-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .menu-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .menu-desc { font-size: 0.75rem; color: var(--text2); }
+
+  /* ── Section titre ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .section-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  /* ── Grille de graphes ── */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 1.2rem;
+  }
+
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.3rem;
+  }
+
+  .chart-card.wide { grid-column: 1 / -1; }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .chart-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text2);
+  }
+
+  .chart-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .chart-canvas { width: 100% !important; max-height: 200px; }
+
+  /* ── Jumeau numérique ── */
+  .twin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .twin-display {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+
+  .twin-display.highlight {
+    border-color: var(--accent);
+    box-shadow: 0 0 30px rgba(245,166,35,0.1);
+  }
+
+  .twin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .twin-row:last-child { border-bottom: none; }
+  .twin-row-label { color: var(--text2); }
+  .twin-row-value { font-weight: 700; font-family: 'Space Mono', monospace; }
+
+  /* ── Loading overlay ── */
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: var(--text2);
+    gap: 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .spinner {
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Timestamp ── */
+  .timestamp {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text3);
+    text-align: right;
+    padding: 0.5rem 0;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    header { padding: 1rem; }
+    .page { padding: 1rem; }
+    .twin-grid { grid-template-columns: 1fr; }
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ ÉCRAN CONNEXION ══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">☀️</div>
+    <div class="login-title">SolarWatch</div>
+    <div class="login-sub">Réseau de stations solaires — Île de La Réunion</div>
+    <input class="login-input" id="token-input" type="password" placeholder="Entrez votre token SolarDB..." />
+    <button class="login-btn" id="login-btn" onclick="doLogin()">Se connecter</button>
+    <div class="login-error" id="login-error">Token invalide ou connexion impossible.</div>
+  </div>
+</div>
+
+<!-- ══ APP ══ -->
+<div id="app">
+
+  <!-- Header -->
+  <header>
+    <div class="header-logo"><span>☀️</span> SolarWatch</div>
+    <div class="header-site">
+      <div class="status-dot"></div>
+      <select class="site-select" id="site-select" onchange="onSiteChange()">
+        <option value="">Chargement...</option>
+      </select>
+      <button class="refresh-btn" onclick="loadCurrentPage()" title="Rafraîchir">↻</button>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav>
+    <button class="nav-btn active" onclick="showPage('accueil', this)">🏠 Accueil</button>
+    <button class="nav-btn" onclick="showPage('solaire', this)">☀️ Solaire</button>
+    <button class="nav-btn" onclick="showPage('meteo', this)">🌡️ Météo</button>
+    <button class="nav-btn" onclick="showPage('vent', this)">💨 Vent</button>
+    <button class="nav-btn" onclick="showPage('uv', this)">🔆 UV</button>
+    <button class="nav-btn" onclick="showPage('jumeau', this)">⚡ Jumeau PV</button>
+  </nav>
+
+  <!-- ══ PAGE ACCUEIL ══ -->
+  <div class="page active" id="page-accueil">
+    <div class="welcome-hero">
+      <h1>Gisement Solaire</h1>
+      <p>Données en temps réel du réseau de stations météorologiques de La Réunion</p>
+    </div>
+
+    <div class="quick-stats" id="quick-stats">
+      <div class="loading"><div class="spinner"></div>Chargement...</div>
+    </div>
+
+    <div style="margin: 1.5rem 0 1rem; font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;">Navigation rapide</div>
+    <div class="menu-grid">
+      <div class="menu-card solar" onclick="showPage('solaire', null)">
+        <div class="menu-icon">☀️</div>
+        <div class="menu-title">Rayonnement</div>
+        <div class="menu-desc">GHI, DHI, DNI</div>
+      </div>
+      <div class="menu-card meteo" onclick="showPage('meteo', null)">
+        <div class="menu-icon">🌡️</div>
+        <div class="menu-title">Météo</div>
+        <div class="menu-desc">Température, humidité, pression</div>
+      </div>
+      <div class="menu-card vent" onclick="showPage('vent', null)">
+        <div class="menu-icon">💨</div>
+        <div class="menu-title">Vent</div>
+        <div class="menu-desc">Vitesse, direction, rafales</div>
+      </div>
+      <div class="menu-card uv" onclick="showPage('uv', null)">
+        <div class="menu-icon">🔆</div>
+        <div class="menu-title">UV</div>
+        <div class="menu-desc">UV-A, UV-B, UV-E</div>
+      </div>
+      <div class="menu-card jumeau" onclick="showPage('jumeau', null)">
+        <div class="menu-icon">⚡</div>
+        <div class="menu-title">Jumeau PV</div>
+        <div class="menu-desc">Simulation panneau solaire</div>
+      </div>
+    </div>
+    <div class="timestamp" id="ts-accueil"></div>
+  </div>
+
+  <!-- ══ PAGE SOLAIRE ══ -->
+  <div class="page" id="page-solaire">
+    <div class="section-header">
+      <div class="section-title">☀️ Rayonnement Solaire</div>
+      <div class="section-badge">3 derniers jours</div>
+    </div>
+    <div id="solaire-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
+    <div class="timestamp" id="ts-solaire"></div>
+  </div>
+
+  <!-- ══ PAGE MÉTÉO ══ -->
+  <div class="page" id="page-meteo">
+    <div class="section-header">
+      <div class="section-title">🌡️ Conditions Météo</div>
+      <div class="section-badge">3 derniers jours</div>
+    </div>
+    <div id="meteo-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
+    <div class="timestamp" id="ts-meteo"></div>
+  </div>
+
+  <!-- ══ PAGE VENT ══ -->
+  <div class="page" id="page-vent">
+    <div class="section-header">
+      <div class="section-title">💨 Vent</div>
+      <div class="section-badge">3 derniers jours</div>
+    </div>
+    <div id="vent-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
+    <div class="timestamp" id="ts-vent"></div>
+  </div>
+
+  <!-- ══ PAGE UV ══ -->
+  <div class="page" id="page-uv">
+    <div class="section-header">
+      <div class="section-title">🔆 Rayonnement UV</div>
+      <div class="section-badge">3 derniers jours</div>
+    </div>
+    <div id="uv-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
+    <div class="timestamp" id="ts-uv"></div>
+  </div>
+
+  <!-- ══ PAGE JUMEAU ══ -->
+  <div class="page" id="page-jumeau">
+    <div class="section-header">
+      <div class="section-title">⚡ Jumeau Numérique PV</div>
+      <div class="section-badge">Modèle à une diode</div>
+    </div>
+    <div id="jumeau-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
+    <div class="timestamp" id="ts-jumeau"></div>
+  </div>
+
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════
+const API = 'https://solardb.univ-reunion.fr/api/v1';
+let token = '';
+let cookies = '';
+let currentSite = 'urmoufia';
+let charts = {};
+let sitesData = [];
+
+// ══════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════
+async function doLogin() {
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+  token = document.getElementById('token-input').value.trim();
+  if (!token) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Connexion...';
+  err.style.display = 'none';
+
+  try {
+    const res = await fetch(`${API}/login?token=${token}`, { credentials: 'include' });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    if (data.message && data.message.toLowerCase().includes('fail')) throw new Error();
+
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    await initApp();
+  } catch {
+    err.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Se connecter';
+  }
+}
+
+document.getElementById('token-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ══════════════════════════════════════════════
+// API CALLS
+// ══════════════════════════════════════════════
+async function apiGet(endpoint) {
+  const res = await fetch(`${API}/${endpoint}&token=${token}`);
+  return res.json();
+}
+
+async function getSites() {
+  const res = await fetch(`${API}/site/all?token=${token}`);
+  return res.json();
+}
+
+async function getSensors(site, types) {
+  const t = types.map(x => `sensor_types[]=${x}`).join('&');
+  const res = await fetch(`${API}/sensor/all?sites[]=${site}&${t}&token=${token}`);
+  return res.json();
+}
+
+async function getData(site, sensors, start = '-3d') {
+  const s = sensors.map(x => `sensors[]=${x}`).join('&');
+  const res = await fetch(`${API}/data?sites[]=${site}&${s}&start=${start}&aggr_fn=mean&aggr_every=1h&token=${token}`);
+  return res.json();
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+async function initApp() {
+  try {
+    const data = await getSites();
+    sitesData = data.sites || [];
+    const sel = document.getElementById('site-select');
+    sel.innerHTML = sitesData.map(s => `<option value="${s.alias}" ${s.alias === currentSite ? 'selected' : ''}>${s.name}</option>`).join('');
+  } catch {
+    // fallback sites connus
+    const fallback = [
+      { alias: 'urmoufia', name: 'Moufia — Saint-Denis' },
+      { alias: 'saintpaulcarat', name: 'Saint Paul Le Carat' },
+      { alias: 'urterresainte', name: 'Terre Sainte' },
+      { alias: 'plaineparcnational', name: 'Plaine des Palmistes' },
+    ];
+    const sel = document.getElementById('site-select');
+    sel.innerHTML = fallback.map(s => `<option value="${s.alias}" ${s.alias === currentSite ? 'selected' : ''}>${s.name}</option>`).join('');
+  }
+  await loadAccueil();
+}
+
+function onSiteChange() {
+  currentSite = document.getElementById('site-select').value;
+  destroyCharts();
+  loadCurrentPage();
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  if (btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if (b.textContent.toLowerCase().includes(name)) b.classList.add('active');
+    });
+  }
+  loadCurrentPage(name);
+}
+
+function loadCurrentPage(name) {
+  const active = name || document.querySelector('.page.active')?.id?.replace('page-', '');
+  if (active === 'accueil') loadAccueil();
+  else if (active === 'solaire') loadSolaire();
+  else if (active === 'meteo') loadMeteo();
+  else if (active === 'vent') loadVent();
+  else if (active === 'uv') loadUV();
+  else if (active === 'jumeau') loadJumeau();
+}
+
+function destroyCharts() {
+  Object.values(charts).forEach(c => { try { c.destroy(); } catch {} });
+  charts = {};
+}
+
+function nowStr() {
+  return `Dernière mise à jour : ${new Date().toLocaleString('fr-FR')}`;
+}
+
+// ══════════════════════════════════════════════
+// CHART FACTORY
+// ══════════════════════════════════════════════
+const COLORS = {
+  GHI: '#f5a623', DHI: '#4db8ff', DNI: '#ff6b35',
+  TA: '#4dffb8', RH: '#4db8ff', PA: '#b06dff',
+  WS: '#4dffb8', WD: '#8a9bc0', WSG: '#ff6b6b',
+  UVA: '#b06dff', UVB: '#7c4dff', UVE: '#d04dff',
+  P: '#f5a623'
+};
+
+function makeChart(id, labels, datasets, yLabel = '', type = 'line') {
+  if (charts[id]) { charts[id].destroy(); }
+  const ctx = document.getElementById(id);
+  if (!ctx) return;
+  charts[id] = new Chart(ctx, {
+    type,
+    data: { labels, datasets: datasets.map(d => ({
+      ...d,
+      borderWidth: 2,
+      pointRadius: 0,
+      tension: 0.3,
+      fill: d.fill !== undefined ? d.fill : true,
+      backgroundColor: d.backgroundColor || (d.borderColor + '18'),
+    }))},
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#8a9bc0', font: { size: 11 }, boxWidth: 12 } },
+        tooltip: { backgroundColor: '#1a2238', borderColor: '#2a3a5c', borderWidth: 1,
+          titleColor: '#e8f0ff', bodyColor: '#8a9bc0' }
+      },
+      scales: {
+        x: { ticks: { color: '#4a5a80', maxTicksLimit: 8, font: { size: 10 } },
+             grid: { color: '#1a2238' } },
+        y: { ticks: { color: '#4a5a80', font: { size: 10 } },
+             grid: { color: '#1f2a42' },
+             title: { display: !!yLabel, text: yLabel, color: '#4a5a80', font: { size: 10 } } }
+      }
+    }
+  });
+}
+
+// ══════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════
+function parseData(raw, site, sensor) {
+  try {
+    const d = raw[site][sensor];
+    const labels = d.dates.map(x => {
+      const dt = new Date(x);
+      return `${dt.getDate().toString().padStart(2,'0')}/${(dt.getMonth()+1).toString().padStart(2,'0')} ${dt.getHours().toString().padStart(2,'0')}h`;
+    });
+    const values = d.values.map(v => v === null ? null : +v.toFixed(2));
+    return { labels, values };
+  } catch { return { labels: [], values: [] }; }
+}
+
+function lastValid(values) {
+  for (let i = values.length - 1; i >= 0; i--) {
+    if (values[i] !== null && values[i] !== undefined) return values[i];
+  }
+  return null;
+}
+
+function avg(values) {
+  const v = values.filter(x => x !== null && !isNaN(x));
+  return v.length ? (v.reduce((a,b) => a+b, 0) / v.length).toFixed(1) : '--';
+}
+
+function max(values) {
+  const v = values.filter(x => x !== null && !isNaN(x));
+  return v.length ? Math.max(...v).toFixed(1) : '--';
+}
+
+// ══════════════════════════════════════════════
+// PAGE ACCUEIL
+// ══════════════════════════════════════════════
+async function loadAccueil() {
+  const el = document.getElementById('quick-stats');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+
+  try {
+    // On cherche les capteurs dispo
+    const sensors = [];
+    const tryTypes = ['GHI', 'TA', 'RH', 'WS'];
+    for (const t of tryTypes) {
+      try {
+        const r = await getSensors(currentSite, [t]);
+        if (r.sensors && r.sensors.length) sensors.push({ type: t, id: r.sensors[0] });
+      } catch {}
+    }
+
+    if (!sensors.length) { el.innerHTML = '<div class="loading">Aucun capteur disponible pour ce site.</div>'; return; }
+
+    const sensorIds = sensors.map(s => s.id);
+    const raw = await getData(currentSite, sensorIds, '-1d');
+
+    const stats = [];
+    for (const s of sensors) {
+      const d = parseData(raw, currentSite, s.id);
+      const val = lastValid(d.values);
+      const config = {
+        GHI: { icon: '☀️', label: 'Irradiance', unit: 'W/m²', color: 'var(--accent)' },
+        TA:  { icon: '🌡️', label: 'Température', unit: '°C', color: 'var(--green)' },
+        RH:  { icon: '💧', label: 'Humidité', unit: '%', color: 'var(--blue)' },
+        WS:  { icon: '💨', label: 'Vent', unit: 'm/s', color: 'var(--purple)' },
+      }[s.type] || { icon: '📊', label: s.type, unit: '', color: 'var(--text)' };
+      stats.push({ ...config, val, avg: avg(d.values), max: max(d.values) });
+    }
+
+    el.innerHTML = stats.map(s => `
+      <div class="stat-card">
+        <div class="stat-icon">${s.icon}</div>
+        <div class="stat-label">${s.label}</div>
+        <div style="color:${s.color}">
+          <span class="stat-value">${s.val !== null ? s.val : '--'}</span>
+          <span class="stat-unit">${s.unit}</span>
+        </div>
+        <div class="stat-trend">Moy 24h : ${s.avg} ${s.unit} · Max : ${s.max} ${s.unit}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('ts-accueil').textContent = nowStr();
+  } catch (e) {
+    el.innerHTML = `<div class="loading">Erreur de chargement.</div>`;
+  }
+}
+
+// ══════════════════════════════════════════════
+// PAGE SOLAIRE
+// ══════════════════════════════════════════════
+async function loadSolaire() {
+  const el = document.getElementById('solaire-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+
+  try {
+    const types = ['GHI', 'DHI', 'DNI'];
+    const found = [];
+    for (const t of types) {
+      try {
+        const r = await getSensors(currentSite, [t]);
+        if (r.sensors && r.sensors.length) found.push({ type: t, id: r.sensors[0] });
+      } catch {}
+    }
+
+    if (!found.length) { el.innerHTML = '<div class="loading">Pas de données de rayonnement.</div>'; return; }
+
+    const raw = await getData(currentSite, found.map(f => f.id));
+    const parsed = {};
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+
+    const labels = parsed[found[0].type]?.labels || [];
+
+    el.innerHTML = `
+      <div class="charts-grid">
+        ${found.map(f => `
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">${f.type}</div>
+            <div class="chart-value" style="color:${COLORS[f.type]}">${lastValid(parsed[f.type].values) ?? '--'} <span style="font-size:0.8rem;color:var(--text2)">W/m²</span></div>
+          </div>
+          <canvas id="chart-${f.type}" class="chart-canvas"></canvas>
+        </div>`).join('')}
+        ${found.length >= 2 ? `
+        <div class="chart-card wide">
+          <div class="chart-header"><div class="chart-title">Comparaison GHI / DHI / DNI</div></div>
+          <canvas id="chart-compare" class="chart-canvas" style="max-height:220px"></canvas>
+        </div>` : ''}
+      </div>`;
+
+    for (const f of found) {
+      makeChart(`chart-${f.type}`, labels, [{
+        label: `${f.type} (W/m²)`,
+        data: parsed[f.type].values,
+        borderColor: COLORS[f.type],
+      }], 'W/m²');
+    }
+
+    if (found.length >= 2) {
+      makeChart('chart-compare', labels, found.map(f => ({
+        label: `${f.type} (W/m²)`,
+        data: parsed[f.type].values,
+        borderColor: COLORS[f.type],
+        fill: false,
+      })), 'W/m²');
+    }
+
+    document.getElementById('ts-solaire').textContent = nowStr();
+  } catch {
+    el.innerHTML = '<div class="loading">Erreur de chargement.</div>';
+  }
+}
+
+// ══════════════════════════════════════════════
+// PAGE MÉTÉO
+// ══════════════════════════════════════════════
+async function loadMeteo() {
+  const el = document.getElementById('meteo-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+
+  try {
+    const types = ['TA', 'RH', 'PA', 'RR', 'DP'];
+    const found = [];
+    for (const t of types) {
+      try {
+        const r = await getSensors(currentSite, [t]);
+        if (r.sensors && r.sensors.length) found.push({ type: t, id: r.sensors[0] });
+      } catch {}
+    }
+
+    if (!found.length) { el.innerHTML = '<div class="loading">Pas de données météo.</div>'; return; }
+
+    const raw = await getData(currentSite, found.map(f => f.id));
+    const parsed = {};
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+    const labels = parsed[found[0].type]?.labels || [];
+
+    const meta = {
+      TA: { label: 'Température Air', unit: '°C', color: COLORS.TA },
+      RH: { label: 'Humidité Relative', unit: '%', color: COLORS.RH },
+      PA: { label: 'Pression Atmosphérique', unit: 'hPa', color: COLORS.PA },
+      RR: { label: 'Précipitations', unit: 'mm', color: '#4db8ff' },
+      DP: { label: 'Point de Rosée', unit: '°C', color: '#88ddff' },
+    };
+
+    el.innerHTML = `<div class="charts-grid">${found.map(f => {
+      const m = meta[f.type] || { label: f.type, unit: '', color: 'var(--text)' };
+      return `<div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">${m.label}</div>
+          <div class="chart-value" style="color:${m.color}">${lastValid(parsed[f.type].values) ?? '--'} <span style="font-size:0.8rem;color:var(--text2)">${m.unit}</span></div>
+        </div>
+        <canvas id="chart-${f.type}" class="chart-canvas"></canvas>
+      </div>`;
+    }).join('')}</div>`;
+
+    for (const f of found) {
+      const m = meta[f.type] || { label: f.type, unit: '', color: 'var(--text)' };
+      makeChart(`chart-${f.type}`, labels, [{
+        label: `${m.label} (${m.unit})`,
+        data: parsed[f.type].values,
+        borderColor: m.color,
+      }], m.unit);
+    }
+
+    document.getElementById('ts-meteo').textContent = nowStr();
+  } catch {
+    el.innerHTML = '<div class="loading">Erreur de chargement.</div>';
+  }
+}
+
+// ══════════════════════════════════════════════
+// PAGE VENT
+// ══════════════════════════════════════════════
+async function loadVent() {
+  const el = document.getElementById('vent-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+
+  try {
+    const types = ['WS', 'WSG', 'WD'];
+    const found = [];
+    for (const t of types) {
+      try {
+        const r = await getSensors(currentSite, [t]);
+        if (r.sensors && r.sensors.length) found.push({ type: t, id: r.sensors[0] });
+      } catch {}
+    }
+
+    if (!found.length) { el.innerHTML = '<div class="loading">Pas de données de vent.</div>'; return; }
+
+    const raw = await getData(currentSite, found.map(f => f.id));
+    const parsed = {};
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+    const labels = parsed[found[0].type]?.labels || [];
+
+    const meta = {
+      WS:  { label: 'Vitesse Vent', unit: 'm/s', color: COLORS.WS },
+      WSG: { label: 'Rafales', unit: 'm/s', color: COLORS.WSG },
+      WD:  { label: 'Direction Vent', unit: '°', color: COLORS.WD },
+    };
+
+    el.innerHTML = `<div class="charts-grid">${found.map(f => {
+      const m = meta[f.type];
+      return `<div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">${m.label}</div>
+          <div class="chart-value" style="color:${m.color}">${lastValid(parsed[f.type].values) ?? '--'} <span style="font-size:0.8rem;color:var(--text2)">${m.unit}</span></div>
+        </div>
+        <canvas id="chart-${f.type}" class="chart-canvas"></canvas>
+      </div>`;
+    }).join('')}
+    ${parsed.WS ? `
+    <div class="chart-card wide">
+      <div class="chart-header"><div class="chart-title">Vent vs Rafales</div></div>
+      <canvas id="chart-vent-compare" class="chart-canvas" style="max-height:220px"></canvas>
+    </div>` : ''}</div>`;
+
+    for (const f of found) {
+      const m = meta[f.type];
+      makeChart(`chart-${f.type}`, labels, [{
+        label: `${m.label} (${m.unit})`, data: parsed[f.type].values, borderColor: m.color,
+      }], m.unit);
+    }
+
+    if (parsed.WS && parsed.WSG) {
+      makeChart('chart-vent-compare', labels, [
+        { label: 'Vitesse (m/s)', data: parsed.WS.values, borderColor: COLORS.WS, fill: false },
+        { label: 'Rafales (m/s)', data: parsed.WSG.values, borderColor: COLORS.WSG, fill: false },
+      ], 'm/s');
+    }
+
+    document.getElementById('ts-vent').textContent = nowStr();
+  } catch {
+    el.innerHTML = '<div class="loading">Erreur de chargement.</div>';
+  }
+}
+
+// ══════════════════════════════════════════════
+// PAGE UV
+// ══════════════════════════════════════════════
+async function loadUV() {
+  const el = document.getElementById('uv-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+
+  try {
+    const types = ['UVA', 'UVB', 'UVE', 'UVAB'];
+    const found = [];
+    for (const t of types) {
+      try {
+        const r = await getSensors(currentSite, [t]);
+        if (r.sensors && r.sensors.length) found.push({ type: t, id: r.sensors[0] });
+      } catch {}
+    }
+
+    if (!found.length) { el.innerHTML = '<div class="loading">Pas de données UV pour ce site.</div>'; return; }
+
+    const raw = await getData(currentSite, found.map(f => f.id));
+    const parsed = {};
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+    const labels = parsed[found[0].type]?.labels || [];
+
+    el.innerHTML = `<div class="charts-grid">${found.map(f => `
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-title">${f.type}</div>
+          <div class="chart-value" style="color:${COLORS[f.type] || '#b06dff'}">${lastValid(parsed[f.type].values) ?? '--'} <span style="font-size:0.8rem;color:var(--text2)">W/m²</span></div>
+        </div>
+        <canvas id="chart-${f.type}" class="chart-canvas"></canvas>
+      </div>`).join('')}
+    ${found.length >= 2 ? `
+    <div class="chart-card wide">
+      <div class="chart-header"><div class="chart-title">Comparaison UV</div></div>
+      <canvas id="chart-uv-compare" class="chart-canvas" style="max-height:220px"></canvas>
+    </div>` : ''}</div>`;
+
+    for (const f of found) {
+      makeChart(`chart-${f.type}`, labels, [{
+        label: `${f.type} (W/m²)`, data: parsed[f.type].values,
+        borderColor: COLORS[f.type] || '#b06dff',
+      }], 'W/m²');
+    }
+
+    if (found.length >= 2) {
+      makeChart('chart-uv-compare', labels, found.map(f => ({
+        label: f.type, data: parsed[f.type].values,
+        borderColor: COLORS[f.type] || '#b06dff', fill: false,
+      })), 'W/m²');
+    }
+
+    document.getElementById('ts-uv').textContent = nowStr();
+  } catch {
+    el.innerHTML = '<div class="loading">Erreur de chargement.</div>';
+  }
+}
+
+// ══════════════════════════════════════════════
+// PAGE JUMEAU NUMÉRIQUE
+// ══════════════════════════════════════════════
+const K = 1.381e-23, Q = 1.602e-19;
+const PV = { Iph_ref:9, I0:1e-10, Rs:0.4, Rsh:300, n:1.3, Ns:60, G_ref:1000, T_ref:25, alpha:0.0005, beta:-0.003 };
+
+function solveIV(V, G, T) {
+  const T_K = T + 273.15;
+  const Vt  = K * T_K / Q * PV.Ns;
+  const Iph = PV.Iph_ref * (G / PV.G_ref) * (1 + PV.alpha * (T - PV.T_ref));
+  let I = Iph * 0.9;
+  for (let i = 0; i < 50; i++) {
+    const f  = I - Iph + PV.I0*(Math.exp((V + I*PV.Rs)/(PV.n*Vt)) - 1) + (V + I*PV.Rs)/PV.Rsh;
+    const df = 1 + PV.I0*PV.Rs/(PV.n*Vt)*Math.exp((V + I*PV.Rs)/(PV.n*Vt)) + PV.Rs/PV.Rsh;
+    const dI = f/df;
+    I -= dI;
+    if (Math.abs(dI) < 1e-8) break;
+  }
+  return Math.max(0, I);
+}
+
+function getMPP(G, T) {
+  if (G < 10) return { P: 0, V: 0, I: 0 };
+  const T_K = T + 273.15;
+  const Vt  = K * T_K / Q * PV.Ns;
+  const Iph = PV.Iph_ref * (G / PV.G_ref) * (1 + PV.alpha * (T - PV.T_ref));
+  const Voc = PV.n * Vt * Math.log(Iph / PV.I0 + 1) * (1 + PV.beta*(T - PV.T_ref));
+  const Voc_c = Math.max(1, Voc);
+
+  let bestP = 0, bestV = 0;
+  for (let v = 0; v <= Voc_c * 0.99; v += Voc_c / 200) {
+    const i = solveIV(v, G, T);
+    const p = v * i;
+    if (p > bestP) { bestP = p; bestV = v; }
+  }
+  return { P: bestP, V: bestV, I: bestP / (bestV || 1) };
+}
+
+async function loadJumeau() {
+  const el = document.getElementById('jumeau-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div>Simulation en cours...</div>';
+
+  try {
+    // Récupérer GHI et TA
+    let ghiId = '', taId = '';
+    try { const r = await getSensors(currentSite, ['GHI']); ghiId = r.sensors?.[0] || ''; } catch {}
+    try { const r = await getSensors(currentSite, ['TA']);  taId  = r.sensors?.[0] || ''; } catch {}
+
+    if (!ghiId) { el.innerHTML = '<div class="loading">Pas de capteur GHI disponible.</div>'; return; }
+
+    const sensors = [ghiId, taId].filter(Boolean);
+    const raw = await getData(currentSite, sensors);
+
+    const ghiD = parseData(raw, currentSite, ghiId);
+    const taD  = taId ? parseData(raw, currentSite, taId) : { values: ghiD.values.map(() => 25) };
+    const labels = ghiD.labels;
+
+    // Calculer P_MPP pour chaque point
+    const pMpp = [];
+    let G_now = 0, T_now = 25, P_now = 0, V_now = 0, I_now = 0, eff_now = 0;
+
+    for (let i = 0; i < ghiD.values.length; i++) {
+      const G = ghiD.values[i] ?? 0;
+      const T = taD.values[i] ?? 25;
+      const mpp = getMPP(G, T);
+      pMpp.push(+mpp.P.toFixed(1));
+      if (i === ghiD.values.length - 1) {
+        G_now = G; T_now = T;
+        P_now = mpp.P; V_now = mpp.V; I_now = mpp.I;
+        eff_now = G > 10 ? (mpp.P / (G * 1.6)) * 100 : 0;
+      }
+    }
+
+    const energie = pMpp.reduce((a,b) => a + b, 0) / 1000; // kWh (valeurs horaires)
+
+    // Courbes I-V et P-V instantanées
+    const T_K = T_now + 273.15;
+    const Vt  = K * T_K / Q * PV.Ns;
+    const Iph = PV.Iph_ref * (G_now / PV.G_ref) * (1 + PV.alpha * (T_now - PV.T_ref));
+    const Voc_c = Math.max(1, PV.n * Vt * Math.log(Iph / PV.I0 + 1) * (1 + PV.beta*(T_now - PV.T_ref)));
+    const Vs = [], Is = [], Ps = [];
+    for (let v = 0; v <= Voc_c * 0.99; v += Voc_c / 100) {
+      const i = solveIV(v, G_now, T_now);
+      Vs.push(+v.toFixed(2)); Is.push(+i.toFixed(3)); Ps.push(+(v*i).toFixed(2));
+    }
+
+    el.innerHTML = `
+      <div class="twin-grid">
+        <div class="twin-display highlight">
+          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);margin-bottom:1rem;font-weight:700">⚡ État Instantané</div>
+          <div class="twin-row"><span class="twin-row-label">Irradiance GHI</span><span class="twin-row-value" style="color:var(--accent)">${G_now.toFixed(1)} W/m²</span></div>
+          <div class="twin-row"><span class="twin-row-label">Température</span><span class="twin-row-value" style="color:var(--green)">${T_now.toFixed(1)} °C</span></div>
+          <div class="twin-row"><span class="twin-row-label">Puissance MPP</span><span class="twin-row-value" style="color:var(--accent)">${P_now.toFixed(1)} W</span></div>
+          <div class="twin-row"><span class="twin-row-label">Tension MPP</span><span class="twin-row-value">${V_now.toFixed(2)} V</span></div>
+          <div class="twin-row"><span class="twin-row-label">Courant MPP</span><span class="twin-row-value">${I_now.toFixed(2)} A</span></div>
+          <div class="twin-row"><span class="twin-row-label">Rendement</span><span class="twin-row-value" style="color:var(--green)">${eff_now.toFixed(1)} %</span></div>
+          <div class="twin-row"><span class="twin-row-label">Énergie (3j)</span><span class="twin-row-value" style="color:var(--blue)">${energie.toFixed(2)} kWh</span></div>
+        </div>
+        <div class="twin-display">
+          <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text2);margin-bottom:1rem;font-weight:700">📋 Paramètres Modèle</div>
+          <div class="twin-row"><span class="twin-row-label">Iph_ref</span><span class="twin-row-value">${PV.Iph_ref} A</span></div>
+          <div class="twin-row"><span class="twin-row-label">Rs</span><span class="twin-row-value">${PV.Rs} Ω</span></div>
+          <div class="twin-row"><span class="twin-row-label">Rsh</span><span class="twin-row-value">${PV.Rsh} Ω</span></div>
+          <div class="twin-row"><span class="twin-row-label">n (idéalité)</span><span class="twin-row-value">${PV.n}</span></div>
+          <div class="twin-row"><span class="twin-row-label">Cellules Ns</span><span class="twin-row-value">${PV.Ns}</span></div>
+          <div class="twin-row"><span class="twin-row-label">α (courant)</span><span class="twin-row-value">${PV.alpha}/°C</span></div>
+          <div class="twin-row"><span class="twin-row-label">β (tension)</span><span class="twin-row-value">${PV.beta}/°C</span></div>
+        </div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header"><div class="chart-title">Courbe I-V instantanée</div></div>
+          <canvas id="chart-iv" class="chart-canvas"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div class="chart-title">Courbe P-V instantanée</div></div>
+          <canvas id="chart-pv" class="chart-canvas"></canvas>
+        </div>
+        <div class="chart-card wide">
+          <div class="chart-header">
+            <div class="chart-title">Puissance MPP simulée (3 jours)</div>
+            <div class="chart-value" style="color:var(--accent)">${P_now.toFixed(0)} <span style="font-size:0.8rem;color:var(--text2)">W</span></div>
+          </div>
+          <canvas id="chart-pmpp" class="chart-canvas" style="max-height:200px"></canvas>
+        </div>
+      </div>`;
+
+    // Charts
+    makeChart('chart-iv', Vs, [{
+      label: 'Courant (A)', data: Is, borderColor: '#f5a623', fill: true,
+    }], 'A');
+
+    makeChart('chart-pv', Vs, [{
+      label: 'Puissance (W)', data: Ps, borderColor: '#ff6b35', fill: true,
+    }], 'W');
+
+    makeChart('chart-pmpp', labels, [{
+      label: 'P_MPP (W)', data: pMpp, borderColor: '#f5a623', fill: true,
+    }], 'W');
+
+    document.getElementById('ts-jumeau').textContent = nowStr();
+  } catch (e) {
+    el.innerHTML = `<div class="loading">Erreur : ${e.message}</div>`;
+  }
+}
+</script>
+</body>
+</html>
