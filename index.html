@@ -675,6 +675,17 @@ async function getData(site, sensors, start = '-3d') {
   return r.data || {};
 }
 
+async function getDataFallback(site, sensors, start = '-3d') {
+  const data = await getData(site, sensors, start);
+  if (Object.keys(data).length) return { data, period: start };
+  const fallback = await getData(site, sensors, '-30d');
+  return { data: fallback, period: '-30d' };
+}
+
+function periodLabel(p) {
+  return { '-1d': '24h', '-3d': '3 derniers jours', '-7d': '7 derniers jours', '-30d': '30 derniers jours' }[p] || p;
+}
+
 // ══════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════
@@ -833,7 +844,13 @@ async function loadAccueil() {
     if (!sensors.length) { el.innerHTML = '<div class="loading">Aucun capteur disponible pour ce site.</div>'; return; }
 
     const sensorIds = sensors.map(s => s.id);
-    const raw = await getData(currentSite, sensorIds, '-1d');
+    const { data: raw } = await getDataFallback(currentSite, sensorIds, '-3d');
+
+    if (!Object.keys(raw).length) {
+      el.innerHTML = '<div class="loading">Aucune donnée disponible pour ce site (station hors ligne ?).</div>';
+      document.getElementById('ts-accueil').textContent = nowStr();
+      return;
+    }
 
     const stats = [];
     for (const s of sensors) {
@@ -885,7 +902,12 @@ async function loadSolaire() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données de rayonnement.</div>'; return; }
 
-    const raw = await getData(currentSite, found.map(f => f.id));
+    const { data: raw, period: solPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    if (!Object.keys(raw).length) {
+      el.innerHTML = '<div class="loading">Aucune donnée de rayonnement sur les 30 derniers jours.</div>';
+      return;
+    }
+    document.querySelector('#page-solaire .section-badge').textContent = periodLabel(solPeriod);
     const parsed = {};
     for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
 
@@ -950,7 +972,12 @@ async function loadMeteo() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données météo.</div>'; return; }
 
-    const raw = await getData(currentSite, found.map(f => f.id));
+    const { data: raw, period: meteoPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    if (!Object.keys(raw).length) {
+      el.innerHTML = '<div class="loading">Aucune donnée météo sur les 30 derniers jours.</div>';
+      return;
+    }
+    document.querySelector('#page-meteo .section-badge').textContent = periodLabel(meteoPeriod);
     const parsed = {};
     for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
     const labels = parsed[found[0].type]?.labels || [];
@@ -1008,7 +1035,12 @@ async function loadVent() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données de vent.</div>'; return; }
 
-    const raw = await getData(currentSite, found.map(f => f.id));
+    const { data: raw, period: ventPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    if (!Object.keys(raw).length) {
+      el.innerHTML = '<div class="loading">Aucune donnée de vent sur les 30 derniers jours.</div>';
+      return;
+    }
+    document.querySelector('#page-vent .section-badge').textContent = periodLabel(ventPeriod);
     const parsed = {};
     for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
     const labels = parsed[found[0].type]?.labels || [];
@@ -1074,7 +1106,12 @@ async function loadUV() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données UV pour ce site.</div>'; return; }
 
-    const raw = await getData(currentSite, found.map(f => f.id));
+    const { data: raw, period: uvPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    if (!Object.keys(raw).length) {
+      el.innerHTML = '<div class="loading">Aucune donnée UV sur les 30 derniers jours.</div>';
+      return;
+    }
+    document.querySelector('#page-uv .section-badge').textContent = periodLabel(uvPeriod);
     const parsed = {};
     for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
     const labels = parsed[found[0].type]?.labels || [];
@@ -1164,7 +1201,12 @@ async function loadJumeau() {
     if (!ghiId) { el.innerHTML = '<div class="loading">Pas de capteur GHI disponible.</div>'; return; }
 
     const sensors = [ghiId, taId].filter(Boolean);
-    const raw = await getData(currentSite, sensors);
+    const { data: raw, period: jumeauPeriod } = await getDataFallback(currentSite, sensors);
+    if (!Object.keys(raw).length) {
+      el.innerHTML = '<div class="loading">Aucune donnée disponible pour simuler le jumeau numérique.</div>';
+      return;
+    }
+    document.querySelector('#page-jumeau .section-badge').textContent = 'Modèle à une diode · ' + periodLabel(jumeauPeriod);
 
     const ghiD = parseData(raw, currentSite, ghiId);
     const taD  = taId ? parseData(raw, currentSite, taId) : { values: ghiD.values.map(() => 25) };
