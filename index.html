@@ -359,6 +359,33 @@
     color: var(--text2);
   }
 
+  /* ── Sélecteur de période ── */
+  .period-selector {
+    display: flex;
+    gap: 0.2rem;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.2rem;
+  }
+
+  .period-btn {
+    padding: 0.3rem 0.65rem;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: var(--text2);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .period-btn:hover { color: var(--text); background: var(--card); }
+  .period-btn.active { background: var(--accent); color: #0a0e1a; }
+
   /* ── Grille de graphes ── */
   .charts-grid {
     display: grid;
@@ -555,7 +582,13 @@
   <div class="page" id="page-solaire">
     <div class="section-header">
       <div class="section-title">☀️ Rayonnement Solaire</div>
-      <div class="section-badge">3 derniers jours</div>
+      <div class="period-selector">
+        <button class="period-btn active" data-period="-3d" onclick="setPeriod('solaire','-3d')">3j</button>
+        <button class="period-btn" data-period="-7d" onclick="setPeriod('solaire','-7d')">7j</button>
+        <button class="period-btn" data-period="-30d" onclick="setPeriod('solaire','-30d')">1 mois</button>
+        <button class="period-btn" data-period="-365d" onclick="setPeriod('solaire','-365d')">1 an</button>
+        <button class="period-btn" data-period="-36500d" onclick="setPeriod('solaire','-36500d')">Tout</button>
+      </div>
     </div>
     <div id="solaire-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
     <div class="timestamp" id="ts-solaire"></div>
@@ -565,7 +598,13 @@
   <div class="page" id="page-meteo">
     <div class="section-header">
       <div class="section-title">🌡️ Conditions Météo</div>
-      <div class="section-badge">3 derniers jours</div>
+      <div class="period-selector">
+        <button class="period-btn active" data-period="-3d" onclick="setPeriod('meteo','-3d')">3j</button>
+        <button class="period-btn" data-period="-7d" onclick="setPeriod('meteo','-7d')">7j</button>
+        <button class="period-btn" data-period="-30d" onclick="setPeriod('meteo','-30d')">1 mois</button>
+        <button class="period-btn" data-period="-365d" onclick="setPeriod('meteo','-365d')">1 an</button>
+        <button class="period-btn" data-period="-36500d" onclick="setPeriod('meteo','-36500d')">Tout</button>
+      </div>
     </div>
     <div id="meteo-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
     <div class="timestamp" id="ts-meteo"></div>
@@ -575,7 +614,13 @@
   <div class="page" id="page-vent">
     <div class="section-header">
       <div class="section-title">💨 Vent</div>
-      <div class="section-badge">3 derniers jours</div>
+      <div class="period-selector">
+        <button class="period-btn active" data-period="-3d" onclick="setPeriod('vent','-3d')">3j</button>
+        <button class="period-btn" data-period="-7d" onclick="setPeriod('vent','-7d')">7j</button>
+        <button class="period-btn" data-period="-30d" onclick="setPeriod('vent','-30d')">1 mois</button>
+        <button class="period-btn" data-period="-365d" onclick="setPeriod('vent','-365d')">1 an</button>
+        <button class="period-btn" data-period="-36500d" onclick="setPeriod('vent','-36500d')">Tout</button>
+      </div>
     </div>
     <div id="vent-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
     <div class="timestamp" id="ts-vent"></div>
@@ -585,7 +630,13 @@
   <div class="page" id="page-uv">
     <div class="section-header">
       <div class="section-title">🔆 Rayonnement UV</div>
-      <div class="section-badge">3 derniers jours</div>
+      <div class="period-selector">
+        <button class="period-btn active" data-period="-3d" onclick="setPeriod('uv','-3d')">3j</button>
+        <button class="period-btn" data-period="-7d" onclick="setPeriod('uv','-7d')">7j</button>
+        <button class="period-btn" data-period="-30d" onclick="setPeriod('uv','-30d')">1 mois</button>
+        <button class="period-btn" data-period="-365d" onclick="setPeriod('uv','-365d')">1 an</button>
+        <button class="period-btn" data-period="-36500d" onclick="setPeriod('uv','-36500d')">Tout</button>
+      </div>
     </div>
     <div id="uv-content"><div class="loading"><div class="spinner"></div>Chargement...</div></div>
     <div class="timestamp" id="ts-uv"></div>
@@ -613,6 +664,7 @@ let cookies = '';
 let currentSite = 'urmoufia';
 let charts = {};
 let sitesData = [];
+const pagePeriods = { solaire: '-3d', meteo: '-3d', vent: '-3d', uv: '-3d' };
 
 // ══════════════════════════════════════════════
 // AUTH
@@ -671,7 +723,11 @@ async function getSensors(site, types) {
 
 async function getData(site, sensors, start = '-3d') {
   const s = sensors.join(',');
-  const r = await apiGet(`${API}/data/json?site=${site}&sensorid=${s}&start=${start}&aggrFn=mean&aggrEvery=1h`);
+  let aggr = '1h';
+  if (start === '-30d') aggr = '6h';
+  else if (start === '-365d') aggr = '1d';
+  else if (start === '-36500d') aggr = '7d';
+  const r = await apiGet(`${API}/data/json?site=${site}&sensorid=${s}&start=${start}&aggrFn=mean&aggrEvery=${aggr}`);
   return r.data || {};
 }
 
@@ -683,7 +739,15 @@ async function getDataFallback(site, sensors, start = '-3d') {
 }
 
 function periodLabel(p) {
-  return { '-1d': '24h', '-3d': '3 derniers jours', '-7d': '7 derniers jours', '-30d': '30 derniers jours' }[p] || p;
+  return { '-3d': '3 derniers jours', '-7d': '7 derniers jours', '-30d': 'Dernier mois', '-365d': 'Dernière année', '-36500d': 'Tout', '-1d': '24h' }[p] || p;
+}
+
+function setPeriod(page, period) {
+  pagePeriods[page] = period;
+  document.querySelectorAll(`#page-${page} .period-btn`).forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.period === period);
+  });
+  loadCurrentPage(page);
 }
 
 // ══════════════════════════════════════════════
@@ -794,11 +858,15 @@ function makeChart(id, labels, datasets, yLabel = '', type = 'line') {
 // ══════════════════════════════════════════════
 // HELPERS
 // ══════════════════════════════════════════════
-function parseData(raw, site, sensor) {
+function parseData(raw, site, sensor, period = '-3d') {
   try {
     const d = raw[site][sensor];
+    const longPeriod = period === '-365d' || period === '-36500d';
     const labels = d.dates.map(x => {
       const dt = new Date(x);
+      if (longPeriod) {
+        return `${dt.getDate().toString().padStart(2,'0')}/${(dt.getMonth()+1).toString().padStart(2,'0')}`;
+      }
       return `${dt.getDate().toString().padStart(2,'0')}/${(dt.getMonth()+1).toString().padStart(2,'0')} ${dt.getHours().toString().padStart(2,'0')}h`;
     });
     const values = d.values.map(v => v === null ? null : +v.toFixed(2));
@@ -889,6 +957,7 @@ async function loadAccueil() {
 async function loadSolaire() {
   const el = document.getElementById('solaire-content');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+  const period = pagePeriods.solaire;
 
   try {
     const types = ['GHI', 'DHI', 'DNI'];
@@ -902,15 +971,14 @@ async function loadSolaire() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données de rayonnement.</div>'; return; }
 
-    const { data: raw, period: solPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    const raw = await getData(currentSite, found.map(f => f.id), period);
     if (!Object.keys(raw).length) {
-      el.innerHTML = '<div class="loading">Aucune donnée de rayonnement sur les 30 derniers jours.</div>';
+      el.innerHTML = '<div class="loading">Aucune donnée de rayonnement pour la période sélectionnée.</div>';
       return;
     }
-    document.querySelector('#page-solaire .section-badge').textContent = periodLabel(solPeriod);
-    const parsed = {};
-    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
 
+    const parsed = {};
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id, period); }
     const labels = parsed[found[0].type]?.labels || [];
 
     el.innerHTML = `
@@ -959,6 +1027,7 @@ async function loadSolaire() {
 async function loadMeteo() {
   const el = document.getElementById('meteo-content');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+  const period = pagePeriods.meteo;
 
   try {
     const types = ['TA', 'RH', 'PA', 'RR', 'DP'];
@@ -972,14 +1041,14 @@ async function loadMeteo() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données météo.</div>'; return; }
 
-    const { data: raw, period: meteoPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    const raw = await getData(currentSite, found.map(f => f.id), period);
     if (!Object.keys(raw).length) {
-      el.innerHTML = '<div class="loading">Aucune donnée météo sur les 30 derniers jours.</div>';
+      el.innerHTML = '<div class="loading">Aucune donnée météo pour la période sélectionnée.</div>';
       return;
     }
-    document.querySelector('#page-meteo .section-badge').textContent = periodLabel(meteoPeriod);
+
     const parsed = {};
-    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id, period); }
     const labels = parsed[found[0].type]?.labels || [];
 
     const meta = {
@@ -1022,6 +1091,7 @@ async function loadMeteo() {
 async function loadVent() {
   const el = document.getElementById('vent-content');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+  const period = pagePeriods.vent;
 
   try {
     const types = ['WS', 'WSG', 'WD'];
@@ -1035,14 +1105,14 @@ async function loadVent() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données de vent.</div>'; return; }
 
-    const { data: raw, period: ventPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    const raw = await getData(currentSite, found.map(f => f.id), period);
     if (!Object.keys(raw).length) {
-      el.innerHTML = '<div class="loading">Aucune donnée de vent sur les 30 derniers jours.</div>';
+      el.innerHTML = '<div class="loading">Aucune donnée de vent pour la période sélectionnée.</div>';
       return;
     }
-    document.querySelector('#page-vent .section-badge').textContent = periodLabel(ventPeriod);
+
     const parsed = {};
-    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id, period); }
     const labels = parsed[found[0].type]?.labels || [];
 
     const meta = {
@@ -1093,6 +1163,7 @@ async function loadVent() {
 async function loadUV() {
   const el = document.getElementById('uv-content');
   el.innerHTML = '<div class="loading"><div class="spinner"></div>Chargement...</div>';
+  const period = pagePeriods.uv;
 
   try {
     const types = ['UVA', 'UVB', 'UVE', 'UVAB'];
@@ -1106,14 +1177,14 @@ async function loadUV() {
 
     if (!found.length) { el.innerHTML = '<div class="loading">Pas de données UV pour ce site.</div>'; return; }
 
-    const { data: raw, period: uvPeriod } = await getDataFallback(currentSite, found.map(f => f.id));
+    const raw = await getData(currentSite, found.map(f => f.id), period);
     if (!Object.keys(raw).length) {
-      el.innerHTML = '<div class="loading">Aucune donnée UV sur les 30 derniers jours.</div>';
+      el.innerHTML = '<div class="loading">Aucune donnée UV pour la période sélectionnée.</div>';
       return;
     }
-    document.querySelector('#page-uv .section-badge').textContent = periodLabel(uvPeriod);
+
     const parsed = {};
-    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id); }
+    for (const f of found) { parsed[f.type] = parseData(raw, currentSite, f.id, period); }
     const labels = parsed[found[0].type]?.labels || [];
 
     el.innerHTML = `<div class="charts-grid">${found.map(f => `
