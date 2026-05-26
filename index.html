@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SolarWatch — Réunion</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   :root {
@@ -25,6 +25,90 @@
     --glow: rgba(245,166,35,0.15);
     --glow2: rgba(77,184,255,0.1);
   }
+
+  html.streamlit {
+    --bg: #0e1117;
+    --bg2: #262730;
+    --bg3: #1a1c25;
+    --card: #262730;
+    --card2: #1e2029;
+    --border: #3d3f4f;
+    --accent: #ff4b4b;
+    --accent2: #ff6b6b;
+    --blue: #1c83e1;
+    --green: #21c354;
+    --purple: #7b2fff;
+    --text: #fafafa;
+    --text2: #a3a8b8;
+    --text3: #6b7280;
+    --glow: rgba(255,75,75,0.08);
+    --glow2: rgba(28,131,225,0.08);
+  }
+
+  html.streamlit body {
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  html.streamlit body::before { display: none; }
+
+  html.streamlit header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: none;
+  }
+
+  html.streamlit .header-logo { color: #ff4b4b; }
+
+  html.streamlit nav {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  html.streamlit .nav-btn.active {
+    color: #ff4b4b;
+    border-bottom-color: #ff4b4b;
+  }
+
+  html.streamlit .stat-card,
+  html.streamlit .chart-card,
+  html.streamlit .twin-display,
+  html.streamlit .menu-card {
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+
+  html.streamlit .stat-card:hover { border-color: #ff4b4b; box-shadow: 0 4px 12px rgba(255,75,75,0.15); }
+
+  html.streamlit .login-box { border-radius: 12px; }
+  html.streamlit .login-btn { background: #ff4b4b; }
+  html.streamlit .login-btn:hover { background: #ff6b6b; box-shadow: 0 4px 15px rgba(255,75,75,0.3); }
+
+  html.streamlit .period-btn.active { background: #ff4b4b; }
+
+  html.streamlit .welcome-hero h1 {
+    background: linear-gradient(135deg, #ff4b4b, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  html.streamlit .section-title { font-family: 'Source Sans 3', sans-serif; font-size: 1.4rem; }
+  html.streamlit .chart-title { font-family: 'Source Sans 3', sans-serif; letter-spacing: 0.03em; }
+  html.streamlit .stat-label { font-family: 'Source Sans 3', sans-serif; }
+
+  .theme-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    padding: 0.5rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .theme-btn:hover { border-color: var(--accent); color: var(--accent); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -523,6 +607,7 @@
         <option value="">Chargement...</option>
       </select>
       <button class="refresh-btn" onclick="loadCurrentPage()" title="Rafraîchir">↻</button>
+      <button class="theme-btn" id="theme-btn" onclick="toggleTheme()">🎨 Streamlit</button>
     </div>
   </header>
 
@@ -658,10 +743,25 @@
 // ══════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════
-const API = 'http://localhost:5000/solardb';
+const API = window.location.origin + '/solardb';
+
+function toggleTheme() {
+  const isStreamlit = document.documentElement.classList.toggle('streamlit');
+  document.getElementById('theme-btn').textContent = isStreamlit ? '🌙 SolarWatch' : '🎨 Streamlit';
+  localStorage.setItem('theme', isStreamlit ? 'streamlit' : 'dark');
+  destroyCharts();
+  loadCurrentPage();
+}
+if (localStorage.getItem('theme') === 'streamlit') {
+  document.documentElement.classList.add('streamlit');
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-btn');
+    if (btn) btn.textContent = '🌙 SolarWatch';
+  });
+}
 let token = '';
 let cookies = '';
-let currentSite = 'urmoufia';
+let currentSite = 'urbsrn';
 let charts = {};
 let sitesData = [];
 const pagePeriods = { solaire: '-3d', meteo: '-3d', vent: '-3d', uv: '-3d' };
@@ -761,6 +861,7 @@ async function initApp() {
   } catch {
     // fallback sites connus
     const fallback = [
+      { alias: 'urbsrn', name: 'URBSRN' },
       { alias: 'urmoufia', name: 'Moufia — Saint-Denis' },
       { alias: 'saintpaulcarat', name: 'Saint Paul Le Carat' },
       { alias: 'urterresainte', name: 'Terre Sainte' },

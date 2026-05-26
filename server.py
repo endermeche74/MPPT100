@@ -4,7 +4,7 @@ import requests
 import logging
 
 logging.basicConfig(
-    filename='C:/Users/soren/OneDrive/Desktop/MPPT100/proxy.log',
+    filename='proxy.log',
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
 )
@@ -48,4 +48,4 @@ def proxy(path):
     return Response(resp.content, resp.status_code, headers)
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5000)
+    app.run(host='0.0.0.0', debug=False, port=5000)

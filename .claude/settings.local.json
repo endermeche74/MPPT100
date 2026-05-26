@@ -13,7 +13,18 @@
       "PowerShell(Stop-Process *)",
       "PowerShell(& \"C:\\\\Users\\\\soren\\\\anaconda3\\\\python.exe\" -c \"import requests; r = requests.get\\('https://solardb.univ-reunion.fr/api/v1/data/sites', timeout=10\\); print\\(r.status_code, r.text[:500]\\)\")",
       "PowerShell(& \"C:\\\\Users\\\\soren\\\\anaconda3\\\\python.exe\" -c \"import requests; r = requests.get\\('https://solardb.univ-reunion.fr/api/v1/login?token=test', timeout=10\\); print\\(r.status_code\\); print\\(r.headers.get\\('Content-Type',''\\)\\); print\\(r.text[:500]\\)\")",
-      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5000\" -UseBasicParsing -TimeoutSec 5; \"Serveur OK: $\\($r.StatusCode\\)\" } catch { \"Serveur KO: $_\" })"
+      "PowerShell(try { $r = Invoke-WebRequest -Uri \"http://localhost:5000\" -UseBasicParsing -TimeoutSec 5; \"Serveur OK: $\\($r.StatusCode\\)\" } catch { \"Serveur KO: $_\" })",
+      "Bash(python *)",
+      "Bash(timeout 3 type \"C:\\\\Users\\\\soren\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-soren-OneDrive-Desktop-MPPT100\\\\c5b50f99-cd7c-4e96-b0c7-246da12cb3e6\\\\tasks\\\\b4eq3xydh.output\")",
+      "Bash(exit 0)",
+      "Bash(where py *)",
+      "Bash(where python3 *)",
+      "Bash(dir C:\\\\Users\\\\soren\\\\anaconda3\\\\python.exe)",
+      "Bash(dir C:\\\\ProgramData\\\\anaconda3\\\\python.exe)",
+      "Bash(dir C:\\\\Users\\\\soren\\\\AppData\\\\Local\\\\Programs\\\\Python\\\\*)",
+      "Bash(dir \"C:\\\\Users\\\\soren\\\\AppData\\\\Local\\\\spyder*\")",
+      "Bash(dir C:\\\\Users\\\\soren\\\\miniconda3\\\\python.exe)",
+      "Bash(scp *)"
     ]
   }
 }

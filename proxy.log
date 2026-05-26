@@ -1500,3 +1500,209 @@
 2026-05-20 15:57:42,823 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urterresainte&sensorid=GHI_ae01_Avg%2CTA_nu01_Avg%2CRH_nu01_Avg%2CWS_nq01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
 2026-05-20 15:57:43,325 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urterresainte":{"GHI_ae01_Avg":{"dates":["2026-05-17T12:00:00Z","2026-05-17T13:00:00Z","2026-05-17T14:00:00Z","2026-05-17T15:00:00Z","2026-05-17T16:00:00Z","2026-05-17T17:00:00Z","2026-05-17T18:00:00Z","2026-05-17T19:00:00Z","2026-05-17T20:00:00Z","2026-05-17
 2026-05-20 15:57:43,325 INFO 127.0.0.1 - - [20/May/2026 15:57:43] "GET /solardb/data/json?site=urterresainte&sensorid=GHI_ae01_Avg,TA_nu01_Avg,RH_nu01_Avg,WS_nq01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:08,108 INFO [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-05-21 09:29:08,108 INFO [33mPress CTRL+C to quit[0m
+2026-05-21 09:29:33,190 INFO 127.0.0.1 - - [21/May/2026 09:29:33] "GET / HTTP/1.1" 200 -
+2026-05-21 09:29:33,645 INFO 127.0.0.1 - - [21/May/2026 09:29:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-05-21 09:29:35,905 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/login?token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:36,074 INFO \u2190 200 | {"code":200,"message":"Successfully authenticated user"}
+2026-05-21 09:29:36,074 INFO 127.0.0.1 - - [21/May/2026 09:29:36] "GET /solardb/login?token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:36,397 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sites?token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:38,223 INFO \u2190 200 | {"code":200,"message":"Success","data":["amitie","anseboileau","antananarivo","aurere","braspanonmoreau","cavernedufour","cilaosbrassec","cilaospiscine","cilaosthermes","craterebory","dembeni","diego","durban","edfboisdenefles","edflapossession","edfsaintandre","edfsaintleu","edfsaintpierre","hahaya
+2026-05-21 09:29:38,223 INFO 127.0.0.1 - - [21/May/2026 09:29:38] "GET /solardb/data/sites?token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:38,240 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urmoufia&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:38,938 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pa01_Avg","GHI_pa03_Avg","GHI_pn03_Avg","GHI_qb01_Avg","GHI_qb03_Avg"]}
+2026-05-21 09:29:38,938 INFO 127.0.0.1 - - [21/May/2026 09:29:38] "GET /solardb/data/sensors?site=urmoufia&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:39,254 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urmoufia&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:40,068 INFO \u2190 200 | {"code":200,"message":"Success","data":["TA_me03_Avg","TA_mq03_Avg","TA_mr03_Avg","TA_mu01_Avg","TA_mu03_Avg","TA_mu08_Avg","TA_my03_Avg"]}
+2026-05-21 09:29:40,068 INFO 127.0.0.1 - - [21/May/2026 09:29:40] "GET /solardb/data/sensors?site=urmoufia&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:40,068 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urmoufia&type=RH&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:40,685 INFO \u2190 200 | {"code":200,"message":"Success","data":["RH_me03_Avg","RH_mq03_Avg","RH_mr03_Avg","RH_mu01_Avg","RH_mu03_Avg","RH_mu08_Avg","RH_my03_Avg"]}
+2026-05-21 09:29:40,687 INFO 127.0.0.1 - - [21/May/2026 09:29:40] "GET /solardb/data/sensors?site=urmoufia&type=RH&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:40,996 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urmoufia&type=WS&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:41,600 INFO \u2190 200 | {"code":200,"message":"Success","data":["WS_me03_Avg","WS_mq03_Avg","WS_mr03_Avg","WS_mt01_Avg","WS_mt03_Avg","WS_mt06_Avg","WS_nn01_Avg","WS_oo03_Avg"]}
+2026-05-21 09:29:41,600 INFO 127.0.0.1 - - [21/May/2026 09:29:41] "GET /solardb/data/sensors?site=urmoufia&type=WS&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:41,600 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urmoufia&sensorid=GHI_pa01_Avg%2CTA_me03_Avg%2CRH_me03_Avg%2CWS_me03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:42,116 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:29:42,116 INFO 127.0.0.1 - - [21/May/2026 09:29:42] "GET /solardb/data/json?site=urmoufia&sensorid=GHI_pa01_Avg,TA_me03_Avg,RH_me03_Avg,WS_me03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:42,415 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urmoufia&sensorid=GHI_pa01_Avg%2CTA_me03_Avg%2CRH_me03_Avg%2CWS_me03_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:43,651 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:29:43,651 INFO 127.0.0.1 - - [21/May/2026 09:29:43] "GET /solardb/data/json?site=urmoufia&sensorid=GHI_pa01_Avg,TA_me03_Avg,RH_me03_Avg,WS_me03_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:47,821 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:48,437 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:29:48,437 INFO 127.0.0.1 - - [21/May/2026 09:29:48] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:48,743 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:49,330 INFO \u2190 200 | {"code":200,"message":"Success","data":["TA_mq03_Avg"]}
+2026-05-21 09:29:49,347 INFO 127.0.0.1 - - [21/May/2026 09:29:49] "GET /solardb/data/sensors?site=urbsrn&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:49,347 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=RH&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:49,790 INFO \u2190 200 | {"code":200,"message":"Success","data":["RH_mq03_Avg"]}
+2026-05-21 09:29:49,790 INFO 127.0.0.1 - - [21/May/2026 09:29:49] "GET /solardb/data/sensors?site=urbsrn&type=RH&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:50,108 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=WS&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:50,608 INFO \u2190 200 | {"code":200,"message":"Success","data":["WS_mq03_Avg"]}
+2026-05-21 09:29:50,608 INFO 127.0.0.1 - - [21/May/2026 09:29:50] "GET /solardb/data/sensors?site=urbsrn&type=WS&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:50,616 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CTA_mq03_Avg%2CRH_mq03_Avg%2CWS_mq03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:50,991 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"GHI_as03_Avg":{"dates":["2026-05-18T06:00:00Z","2026-05-18T07:00:00Z","2026-05-18T08:00:00Z","2026-05-18T09:00:00Z","2026-05-18T10:00:00Z","2026-05-18T11:00:00Z","2026-05-18T12:00:00Z","2026-05-18T13:00:00Z","2026-05-18T14:00:00Z","2026-05-18T15:00:
+2026-05-21 09:29:50,991 INFO 127.0.0.1 - - [21/May/2026 09:29:50] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,TA_mq03_Avg,RH_mq03_Avg,WS_mq03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:58,884 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:59,368 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:29:59,368 INFO 127.0.0.1 - - [21/May/2026 09:29:59] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:29:59,375 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:29:59,767 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pu03_Avg","DHI_pu03_Max","DHI_pu03_Min","DHI_pu03_Std","DHI_qx03_Avg","DHI_qx03_Max","DHI_qx03_Min","DHI_qx03_Std"]}
+2026-05-21 09:29:59,767 INFO 127.0.0.1 - - [21/May/2026 09:29:59] "GET /solardb/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:00,101 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:00,531 INFO \u2190 200 | {"code":200,"message":"Success","data":["DNI_py03_Avg","DNI_py03_Max","DNI_py03_Min","DNI_py03_Std","DNI_qw03_Avg","DNI_qw03_Max","DNI_qw03_Min","DNI_qw03_Std"]}
+2026-05-21 09:30:00,531 INFO 127.0.0.1 - - [21/May/2026 09:30:00] "GET /solardb/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:00,531 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CDHI_pu03_Avg%2CDNI_py03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:00,881 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"DHI_pu03_Avg":{"dates":["2026-05-18T06:00:00Z","2026-05-18T07:00:00Z","2026-05-18T08:00:00Z","2026-05-18T09:00:00Z","2026-05-18T10:00:00Z","2026-05-18T11:00:00Z","2026-05-18T12:00:00Z","2026-05-18T13:00:00Z","2026-05-18T14:00:00Z","2026-05-18T15:00:
+2026-05-21 09:30:00,881 INFO 127.0.0.1 - - [21/May/2026 09:30:00] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,DHI_pu03_Avg,DNI_py03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:03,063 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:03,744 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:30:03,745 INFO 127.0.0.1 - - [21/May/2026 09:30:03] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:03,745 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:04,296 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pu03_Avg","DHI_pu03_Max","DHI_pu03_Min","DHI_pu03_Std","DHI_qx03_Avg","DHI_qx03_Max","DHI_qx03_Min","DHI_qx03_Std"]}
+2026-05-21 09:30:04,296 INFO 127.0.0.1 - - [21/May/2026 09:30:04] "GET /solardb/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:04,614 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:04,779 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:05,228 INFO \u2190 200 | {"code":200,"message":"Success","data":["DNI_py03_Avg","DNI_py03_Max","DNI_py03_Min","DNI_py03_Std","DNI_qw03_Avg","DNI_qw03_Max","DNI_qw03_Min","DNI_qw03_Std"]}
+2026-05-21 09:30:05,228 INFO 127.0.0.1 - - [21/May/2026 09:30:05] "GET /solardb/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:05,228 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CDHI_pu03_Avg%2CDNI_py03_Avg&start=-7d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:05,261 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:30:05,261 INFO 127.0.0.1 - - [21/May/2026 09:30:05] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:05,579 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:05,877 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"DHI_pu03_Avg":{"dates":["2026-05-14T06:00:00Z","2026-05-14T07:00:00Z","2026-05-14T08:00:00Z","2026-05-14T09:00:00Z","2026-05-14T10:00:00Z","2026-05-14T11:00:00Z","2026-05-14T12:00:00Z","2026-05-14T13:00:00Z","2026-05-14T14:00:00Z","2026-05-14T15:00:
+2026-05-21 09:30:05,877 INFO 127.0.0.1 - - [21/May/2026 09:30:05] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,DHI_pu03_Avg,DNI_py03_Avg&start=-7d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:06,283 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pu03_Avg","DHI_pu03_Max","DHI_pu03_Min","DHI_pu03_Std","DHI_qx03_Avg","DHI_qx03_Max","DHI_qx03_Min","DHI_qx03_Std"]}
+2026-05-21 09:30:06,283 INFO 127.0.0.1 - - [21/May/2026 09:30:06] "GET /solardb/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:06,593 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:07,191 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:07,395 INFO \u2190 200 | {"code":200,"message":"Success","data":["DNI_py03_Avg","DNI_py03_Max","DNI_py03_Min","DNI_py03_Std","DNI_qw03_Avg","DNI_qw03_Max","DNI_qw03_Min","DNI_qw03_Std"]}
+2026-05-21 09:30:07,395 INFO 127.0.0.1 - - [21/May/2026 09:30:07] "GET /solardb/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:07,710 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CDHI_pu03_Avg%2CDNI_py03_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:07,826 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:30:07,826 INFO 127.0.0.1 - - [21/May/2026 09:30:07] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:08,159 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:08,175 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"DHI_pu03_Avg":{"dates":["2026-04-21T06:00:00Z","2026-04-21T12:00:00Z","2026-04-21T18:00:00Z","2026-04-22T00:00:00Z","2026-04-22T06:00:00Z","2026-04-22T12:00:00Z","2026-04-22T18:00:00Z","2026-04-23T00:00:00Z","2026-04-23T06:00:00Z","2026-04-23T12:00:
+2026-05-21 09:30:08,175 INFO 127.0.0.1 - - [21/May/2026 09:30:08] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,DHI_pu03_Avg,DNI_py03_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:09,291 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:09,825 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pu03_Avg","DHI_pu03_Max","DHI_pu03_Min","DHI_pu03_Std","DHI_qx03_Avg","DHI_qx03_Max","DHI_qx03_Min","DHI_qx03_Std"]}
+2026-05-21 09:30:09,825 INFO 127.0.0.1 - - [21/May/2026 09:30:09] "GET /solardb/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:10,142 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:11,606 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:30:11,606 INFO \u2190 200 | {"code":200,"message":"Success","data":["DNI_py03_Avg","DNI_py03_Max","DNI_py03_Min","DNI_py03_Std","DNI_qw03_Avg","DNI_qw03_Max","DNI_qw03_Min","DNI_qw03_Std"]}
+2026-05-21 09:30:11,606 INFO 127.0.0.1 - - [21/May/2026 09:30:11] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:11,606 INFO 127.0.0.1 - - [21/May/2026 09:30:11] "GET /solardb/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:11,925 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CDHI_pu03_Avg%2CDNI_py03_Avg&start=-365d&aggrFn=mean&aggrEvery=1d&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:11,925 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:14,270 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pu03_Avg","DHI_pu03_Max","DHI_pu03_Min","DHI_pu03_Std","DHI_qx03_Avg","DHI_qx03_Max","DHI_qx03_Min","DHI_qx03_Std"]}
+2026-05-21 09:30:14,270 INFO 127.0.0.1 - - [21/May/2026 09:30:14] "GET /solardb/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:14,278 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:14,319 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"DHI_pu03_Avg":{"dates":["2025-05-22T00:00:00Z","2025-05-23T00:00:00Z","2025-05-24T00:00:00Z","2025-05-25T00:00:00Z","2025-05-26T00:00:00Z","2025-05-27T00:00:00Z","2025-05-28T00:00:00Z","2025-05-29T00:00:00Z","2025-05-30T00:00:00Z","2025-05-31T00:00:
+2026-05-21 09:30:14,336 INFO 127.0.0.1 - - [21/May/2026 09:30:14] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,DHI_pu03_Avg,DNI_py03_Avg&start=-365d&aggrFn=mean&aggrEvery=1d&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:15,389 INFO \u2190 200 | {"code":200,"message":"Success","data":["DNI_py03_Avg","DNI_py03_Max","DNI_py03_Min","DNI_py03_Std","DNI_qw03_Avg","DNI_qw03_Max","DNI_qw03_Min","DNI_qw03_Std"]}
+2026-05-21 09:30:15,389 INFO 127.0.0.1 - - [21/May/2026 09:30:15] "GET /solardb/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:15,702 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CDHI_pu03_Avg%2CDNI_py03_Avg&start=-36500d&aggrFn=mean&aggrEvery=7d&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:16,718 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"DHI_pu03_Avg":{"dates":["2023-04-27T00:00:00Z","2023-12-28T00:00:00Z","2024-01-04T00:00:00Z","2024-01-11T00:00:00Z","2024-01-18T00:00:00Z","2024-01-25T00:00:00Z","2024-02-01T00:00:00Z","2024-02-08T00:00:00Z","2024-02-15T00:00:00Z","2024-02-22T00:00:
+2026-05-21 09:30:16,718 INFO 127.0.0.1 - - [21/May/2026 09:30:16] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,DHI_pu03_Avg,DNI_py03_Avg&start=-36500d&aggrFn=mean&aggrEvery=7d&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:38,249 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:38,848 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_as03_Avg","GHI_as03_Max","GHI_as03_Min","GHI_as03_Std","GHI_pt03_Avg","GHI_pt03_Max","GHI_pt03_Min","GHI_pt03_Std","GHI_qy03_Avg","GHI_qy03_Max","GHI_qy03_Min","GHI_qy03_Std"]}
+2026-05-21 09:30:38,848 INFO 127.0.0.1 - - [21/May/2026 09:30:38] "GET /solardb/data/sensors?site=urbsrn&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:39,164 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:39,982 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pu03_Avg","DHI_pu03_Max","DHI_pu03_Min","DHI_pu03_Std","DHI_qx03_Avg","DHI_qx03_Max","DHI_qx03_Min","DHI_qx03_Std"]}
+2026-05-21 09:30:39,982 INFO 127.0.0.1 - - [21/May/2026 09:30:39] "GET /solardb/data/sensors?site=urbsrn&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:39,993 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:40,481 INFO \u2190 200 | {"code":200,"message":"Success","data":["DNI_py03_Avg","DNI_py03_Max","DNI_py03_Min","DNI_py03_Std","DNI_qw03_Avg","DNI_qw03_Max","DNI_qw03_Min","DNI_qw03_Std"]}
+2026-05-21 09:30:40,481 INFO 127.0.0.1 - - [21/May/2026 09:30:40] "GET /solardb/data/sensors?site=urbsrn&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:30:40,797 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=urbsrn&sensorid=GHI_as03_Avg%2CDHI_pu03_Avg%2CDNI_py03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:30:41,244 INFO \u2190 200 | {"code":200,"message":"Success","data":{"urbsrn":{"DHI_pu03_Avg":{"dates":["2026-05-18T06:00:00Z","2026-05-18T07:00:00Z","2026-05-18T08:00:00Z","2026-05-18T09:00:00Z","2026-05-18T10:00:00Z","2026-05-18T11:00:00Z","2026-05-18T12:00:00Z","2026-05-18T13:00:00Z","2026-05-18T14:00:00Z","2026-05-18T15:00:
+2026-05-21 09:30:41,244 INFO 127.0.0.1 - - [21/May/2026 09:30:41] "GET /solardb/data/json?site=urbsrn&sensorid=GHI_as03_Avg,DHI_pu03_Avg,DNI_py03_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:39,815 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:40,390 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pp01_Avg"]}
+2026-05-21 09:31:40,390 INFO 127.0.0.1 - - [21/May/2026 09:31:40] "GET /solardb/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:40,708 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:41,106 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pp01_Avg"]}
+2026-05-21 09:31:41,106 INFO 127.0.0.1 - - [21/May/2026 09:31:41] "GET /solardb/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:41,106 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:41,505 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:31:41,505 INFO 127.0.0.1 - - [21/May/2026 09:31:41] "GET /solardb/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:41,822 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg%2CDHI_pp01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:42,088 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:42,372 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:31:42,372 INFO 127.0.0.1 - - [21/May/2026 09:31:42] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg,DHI_pp01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:42,639 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pp01_Avg"]}
+2026-05-21 09:31:42,639 INFO 127.0.0.1 - - [21/May/2026 09:31:42] "GET /solardb/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:42,639 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:43,354 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pp01_Avg"]}
+2026-05-21 09:31:43,360 INFO 127.0.0.1 - - [21/May/2026 09:31:43] "GET /solardb/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:43,669 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:44,268 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:31:44,268 INFO 127.0.0.1 - - [21/May/2026 09:31:44] "GET /solardb/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:31:44,285 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg%2CDHI_pp01_Avg&start=-36500d&aggrFn=mean&aggrEvery=7d&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:31:45,818 INFO \u2190 200 | {"code":200,"message":"Success","data":{"durban":{"DHI_pp01_Avg":{"dates":["2013-09-05T00:00:00Z","2013-09-12T00:00:00Z","2013-09-19T00:00:00Z","2013-09-26T00:00:00Z","2013-10-03T00:00:00Z","2013-10-10T00:00:00Z","2013-10-17T00:00:00Z","2013-10-24T00:00:00Z","2013-10-31T00:00:00Z","2013-11-07T00:00:
+2026-05-21 09:31:45,818 INFO 127.0.0.1 - - [21/May/2026 09:31:45] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg,DHI_pp01_Avg&start=-36500d&aggrFn=mean&aggrEvery=7d&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:08,084 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:08,864 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pp01_Avg"]}
+2026-05-21 09:32:08,864 INFO 127.0.0.1 - - [21/May/2026 09:32:08] "GET /solardb/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:08,864 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:09,282 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pp01_Avg"]}
+2026-05-21 09:32:09,282 INFO 127.0.0.1 - - [21/May/2026 09:32:09] "GET /solardb/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:09,598 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:10,079 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:10,079 INFO 127.0.0.1 - - [21/May/2026 09:32:10] "GET /solardb/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:10,095 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg%2CDHI_pp01_Avg&start=-365d&aggrFn=mean&aggrEvery=1d&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:10,495 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:32:10,495 INFO 127.0.0.1 - - [21/May/2026 09:32:10] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg,DHI_pp01_Avg&start=-365d&aggrFn=mean&aggrEvery=1d&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:14,856 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:15,506 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pp01_Avg"]}
+2026-05-21 09:32:15,513 INFO 127.0.0.1 - - [21/May/2026 09:32:15] "GET /solardb/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:15,513 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:16,739 INFO \u2190 200 | {"code":200,"message":"Success","data":["DHI_pp01_Avg"]}
+2026-05-21 09:32:16,739 INFO 127.0.0.1 - - [21/May/2026 09:32:16] "GET /solardb/data/sensors?site=durban&type=DHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:17,059 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:17,890 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:17,890 INFO 127.0.0.1 - - [21/May/2026 09:32:17] "GET /solardb/data/sensors?site=durban&type=DNI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:17,904 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg%2CDHI_pp01_Avg&start=-36500d&aggrFn=mean&aggrEvery=7d&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:18,887 INFO \u2190 200 | {"code":200,"message":"Success","data":{"durban":{"DHI_pp01_Avg":{"dates":["2013-09-05T00:00:00Z","2013-09-12T00:00:00Z","2013-09-19T00:00:00Z","2013-09-26T00:00:00Z","2013-10-03T00:00:00Z","2013-10-10T00:00:00Z","2013-10-17T00:00:00Z","2013-10-24T00:00:00Z","2013-10-31T00:00:00Z","2013-11-07T00:00:
+2026-05-21 09:32:18,887 INFO 127.0.0.1 - - [21/May/2026 09:32:18] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg,DHI_pp01_Avg&start=-36500d&aggrFn=mean&aggrEvery=7d&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:31,542 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:31,958 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pp01_Avg"]}
+2026-05-21 09:32:31,958 INFO 127.0.0.1 - - [21/May/2026 09:32:31] "GET /solardb/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:31,977 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:32,710 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:32,710 INFO 127.0.0.1 - - [21/May/2026 09:32:32] "GET /solardb/data/sensors?site=durban&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:33,024 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:33,740 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:32:33,740 INFO 127.0.0.1 - - [21/May/2026 09:32:33] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:33,740 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:34,124 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:32:34,124 INFO 127.0.0.1 - - [21/May/2026 09:32:34] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:35,805 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=UVA&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:36,287 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:36,287 INFO 127.0.0.1 - - [21/May/2026 09:32:36] "GET /solardb/data/sensors?site=durban&type=UVA&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:36,304 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=UVB&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:36,704 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:36,704 INFO 127.0.0.1 - - [21/May/2026 09:32:36] "GET /solardb/data/sensors?site=durban&type=UVB&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:37,019 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=UVE&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:37,518 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:37,518 INFO 127.0.0.1 - - [21/May/2026 09:32:37] "GET /solardb/data/sensors?site=durban&type=UVE&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:32:37,535 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=UVAB&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:32:38,302 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:32:38,302 INFO 127.0.0.1 - - [21/May/2026 09:32:38] "GET /solardb/data/sensors?site=durban&type=UVAB&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:39:39,343 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:39:39,708 INFO \u2190 200 | {"code":200,"message":"Success","data":["GHI_pp01_Avg"]}
+2026-05-21 09:39:39,708 INFO 127.0.0.1 - - [21/May/2026 09:39:39] "GET /solardb/data/sensors?site=durban&type=GHI&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:39:39,708 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:39:40,237 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:39:40,239 INFO 127.0.0.1 - - [21/May/2026 09:39:40] "GET /solardb/data/sensors?site=durban&type=TA&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:39:40,559 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=RH&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:39:40,940 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:39:40,940 INFO 127.0.0.1 - - [21/May/2026 09:39:40] "GET /solardb/data/sensors?site=durban&type=RH&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:39:40,958 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/sensors?site=durban&type=WS&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:39:41,557 INFO \u2190 200 | {"code":200,"message":"Success","data":null}
+2026-05-21 09:39:41,557 INFO 127.0.0.1 - - [21/May/2026 09:39:41] "GET /solardb/data/sensors?site=durban&type=WS&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:39:41,874 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:39:42,489 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:39:42,491 INFO 127.0.0.1 - - [21/May/2026 09:39:42] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-3d&aggrFn=mean&aggrEvery=1h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
+2026-05-21 09:39:42,491 INFO \u2192 GET https://solardb.univ-reunion.fr/api/v1/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10
+2026-05-21 09:39:43,098 INFO \u2190 200 | {"code":200,"message":"Success","data":{}}
+2026-05-21 09:39:43,098 INFO 127.0.0.1 - - [21/May/2026 09:39:43] "GET /solardb/data/json?site=durban&sensorid=GHI_pp01_Avg&start=-30d&aggrFn=mean&aggrEvery=6h&token=67ea02eb2c9944e9890593c295a11e2652b9db10 HTTP/1.1" 200 -
